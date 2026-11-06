@@ -1,0 +1,40 @@
+{
+  "name": "341-final",
+  "version": "1.0.0",
+  "description": "## things you will need to add to your personal .env: GITHUB_CLIENT_ID=<your_client_id> GITHUB_CLIENT_SECRET=<your_client_secret> GITHUB_CALLBACK_URL=http://localhost:3000/auth/github/callback",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node swagger.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Chelsea-Saunders/CSE341-Final.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Chelsea-Saunders/CSE341-Final/issues"
+  },
+  "homepage": "https://github.com/Chelsea-Saunders/CSE341-Final#readme",
+
+  "dependencies": {
+    "@apollo/server": "^5.5.1",
+    "connect-mongo": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.9",
+    "express": "^5.3.0",
+    "express-session": "^1.19.0",
+    "graphql": "^16.15.0",
+    "mongoose": "^9.12.0",
+    "passport": "^0.7.0",
+    "passport-github2": "^0.1.12",
+    "passport-google-oauth20": "^2.0.0",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14",
+    "swagger-autogen": "^2.23.7"
+  }
+}
