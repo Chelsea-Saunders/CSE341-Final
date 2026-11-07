@@ -2,18 +2,16 @@ require('dotenv').config();
 
 const express = require('express');
 const session = require('express-session');
-const MongoStore = require('connect-mongo').default;
-const passport = require('passport');
 const swaggerui = require('swagger-ui-express');
 const swaggerDocument = require('./swagger-output.json');
 const cors = require('cors');
 const connectMongoose = require('./db/mongoose');
-const mongodb = require('./db/connect');
+const MongoStore = require('connect-mongo');
 
-require('./config/passport')(passport);
+const passport = require('./config/passport');
 
 const app = express();
-const PORT = process.envPORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(cors({
     origin: '*',
@@ -28,7 +26,7 @@ app.use(
         saveUninitialized: false,
         store: MongoStore.create({
             mongoUrl: process.env.MONGODB_URI
-        }), 
+        }),
 
         cookie: {
             httpOnly: true,
@@ -38,46 +36,45 @@ app.use(
     })
 );
 
-app.use('/api-docs', swaggerui.serve, swaggerui.setup(swaggerDocument));
+
 
 //PASSPORT INIT
 app.use(passport.initialize());
-app.use(passport.session);
+app.use(passport.session());
 
-// SERIALIZE USER INTO SESSION
-passport.serializeUser((user, done) => {
-    done(null, user);
+app.use('/api-docs', swaggerui.serve, swaggerui.setup(swaggerDocument));
+
+app.get('/profile', (req, res) => {
+    if (!req.isAuthenticated()) {
+        return res.status(401).json({ message: 'Not logged in' });
+    }
+    res.json(req.user);
 });
 
-// API ROUTES 
+// logout
+app.get("/logout", (req, res, next) => {
+    req.logout((err) => {
+        if (err) return next(err);
+        res.redirect('/');
+    });
+});
 
-// GITHUB 
-passport.use(
-    new GitHubStrategy(
-        {
-        clientId: process.env.GITHUB_CLIENT_ID, 
-        clientSecret: process.env.GITHUB_CLIENT_SECRET, 
-        callbackURL: process.env.GITHUB_CALLBACK_URL,
-    },
-    function (accessToken, refreshToken, profile, done) {
-        // 1: look up the user in MongoDb
-        // 2: create the user if they don't exist
-        // 3: return the user object
 
-        const user = {
-            githubId: profile.id, 
-            username: profile.username, 
-            displayName: profile.displayName, 
-            profileUrl: profile.profileUrl, 
-            photos: profile.photos, 
-        };
 
-        return done(null, user);
-    }
-  )
+// Google Login
+app.get('/auth/google', 
+    passport.authenticate('google', { scope: ['profile', 'email'] })
 );
 
-// Start GitHub login
+// Google callback
+app.get('/auth/google/callback', 
+    passport.authenticate('google', { failureRedirect: '/login' }),
+    (req, res) => {
+        res.redirect('/dashboard');
+    }
+);
+
+// GitHub login
 app.get(
     '/auth/github', 
     passport.authenticate('github', { scope: ['user:email'] })
@@ -85,44 +82,25 @@ app.get(
 
 // GitHub callback
 app.get(
-    "/auth/github/callbackk", 
+    "/auth/github/callback", 
     passport.authenticate('github', {
         failureRedirect: '/login', 
         session: true,
     }),
     (req, res) => {
-        res.redirect("/");
+        res.redirect("/dashboard");
     }
 );
 
-// Check current login
-app.get('/profile', (req, res) => {
-    if (!req.isAuthenticated()) {
-        return res.status(401).send('Not logged in');
-    }
 
-    res.json(req.user);
-});
 
-// logout
-app.get("/logout", (req, res) => {
-    req.logout(() => {
-        res.redirect('/');
-    });
-});
-
-mongodb.initDb(async (err) => {
-    if(err) {
-        console.error('MongoDB connection error:', err);
-        process.exit(1);
-    }
-    try {
-        await connectMongoose();
+connectMongoose()
+    .then(() => {
         app.listen(PORT, () => {
-            console.log(`Connected to MongoDB and listening on prot ${PORT}.`);
+            console.log(`Connected to MongoDB and listening on port ${PORT}.`);
         });
-    } catch (err) {
+    })
+    .catch((err) => {
         console.error('Mongoose connection error:', err);
         process.exit(1);
-    }
-});
+    });
