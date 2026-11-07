@@ -24,7 +24,6 @@ passport.use(
             clientID: process.env.GOOGLE_CLIENT_ID, 
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
             callbackURL: process.env.GOOGLE_CALLBACK,
-            scope: ['profile', 'email'],
         },
         async (accessToken, refreshToken, profile, done) => {
             try {
@@ -42,7 +41,7 @@ passport.use(
                 }
                 return done(null, user);
             } catch (err) {
-                return done(err, null);
+                return done(err);
             }
         }
     )
@@ -55,7 +54,6 @@ passport.use(
             clientID: process.env.GITHUB_CLIENT_ID, 
             clientSecret: process.env.GITHUB_CLIENT_SECRET, 
             callbackURL: process.env.GITHUB_CALLBACK, 
-            scope: ['user:email'], 
         }, 
         async (accessToken, refreshToken, profile, done) => {
             try {
@@ -73,7 +71,7 @@ passport.use(
                 }
                 return done(null, user);
             } catch (err) {
-                return done(err.null);
+                return done(err);
             }
         }
     )
