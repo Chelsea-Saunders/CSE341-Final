@@ -1,0 +1,14 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "My API",
+    "description": "Lost and Found API",
+    "version": "1.0.0"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "paths": {}
+}

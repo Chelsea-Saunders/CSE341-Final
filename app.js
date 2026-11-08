@@ -1,11 +1,12 @@
 const express = require('express');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
+const storeClass = MongoStore.default || MongoStore;
 const swaggerui = require('swagger-ui-express');
 
 const swaggerDocument = require('./swagger-output.json');
-const passport = require('./config/passport');
-const routes = require('./routes');
+const passport = require('./src/config/passport');
+const routes = require('./src/routes');
 const cors = require('cors');
 
 const app = express();
@@ -21,13 +22,14 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
+
 // SESSION SETUP
 app.use(
     session({
         secret: process.env.SESSION_SECRET, 
         resave: false,
         saveUninitialized: false,
-        store: MongoStore.create({
+        store: storeClass.create({
             mongoUrl: process.env.MONGODB_URI
         }),
     })
