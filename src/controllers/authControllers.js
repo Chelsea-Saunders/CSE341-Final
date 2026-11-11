@@ -1,6 +1,5 @@
-
 // GOOGLE and GITHUB CALLBACK
-const authCallbackSession= (req, res) => {
+/*const authCallbackSession= (req, res) => {
     if(!req.user) {
         return res.status(401).json({
             success: false, 
@@ -58,4 +57,4 @@ module.exports = {
     loginFailure, 
     currentUser, 
     logout, 
-};
+};*/

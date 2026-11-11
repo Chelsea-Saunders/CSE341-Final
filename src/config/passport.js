@@ -1,4 +1,4 @@
-const passport = require('passport');
+/*const passport = require('passport');
 const Google = require('passport-google-oauth20').Strategy;
 const Github = require('passport-github2').Strategy;
 const User = require('../models/User');
@@ -76,4 +76,4 @@ passport.use(
         }
     )
 );
-module.exports = passport;
+module.exports = passport;*/
