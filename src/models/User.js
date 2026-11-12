@@ -1,59 +1,35 @@
-/*const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+const mongoose = require("mongoose");
 
-const UserSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema(
+  {
     name: {
-        type: String,
-        ref: 'User',
-        required: true
+      type: String,
+      required: true,
     },
     email: {
-        type: String,
-        required: true,
-        unique: true,
-        lowercase: true,
-        trim: true
-    },
-    password: {
-        type: String, 
-        required: function() {
-            return !this.googleId && !this.githubId;
-        },
-        select: false
+      type: String,
+      unique: true,
+      sparse: true,
+      lowercase: true,
+      trim: true,
     },
     googleId: {
-        type: String, 
-        sparse: true
+      type: String,
+      unique: true,
+      sparse: true,
     },
     githubId: {
-        type: String, 
-        sparse: true
+      type: String,
+      unique: true,
+      sparse: true,
     },
     role: {
-        type: String, 
-        enum: ['user', 'admin', 'employee'],
-        default: 'user'
-    }, 
-    createdAt: {
-        type: Date, 
-        default: Date.now
-    }
-});
+      type: String,
+      enum: ["user", "admin" /*, "employee"*/],
+      default: "user",
+    },
+  },
+  { timestamps: true },
+);
 
-UserSchema.pre('save', async function (next) {
-    if(!this.isModified('password')) return next();
-
-    try {
-        const salt = await bcrypt.genSalt(10);
-        this.password = await bcrypt.hash(this.password, salt);
-        next();
-    } catch(err) {
-        next(err);
-    }
-});
-
-UserSchema.methods.matchPassword = async function(enteredPassword) {
-    return await bcrypt.compare(enteredPassword, this.password);
-};
-
-module.exports = mongoose.model('User', UserSchema);*/
+module.exports = mongoose.model("User", UserSchema);
