@@ -53,6 +53,13 @@ const logout = (req, res, next) => {
     });
 };
 
+// LOGIN WITH EMAIL
+res.cookie('token', token, {
+    httpOnly: true, 
+    secure: true, 
+    sameSite: 'lax', 
+});
+
 module.exports = {
     authCallbackSession, 
     loginFailure, 

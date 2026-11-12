@@ -1,0 +1,50 @@
+body { 
+    font-family: 'Roboto', Arial;
+    padding: 0 3rem 3rem ;
+}
+.title {
+    margin: 0 10rem;
+}
+.page-container {
+    padding: 3rem 13rem;
+}
+a {
+    color: rgb(12, 103, 111);
+
+    &:visited {
+        color: rgb(57, 23, 125);
+    }
+}
+p {
+    margin: 10px 0 !important;
+}
+.login-container {
+    width: 400px;
+    margin-top: 50px;
+    text-align: center;
+}
+
+.row {
+    margin: 0 10rem;
+}
+.fa-small {
+    font-size: 20px !important;
+}
+
+.action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.action-buttons form {
+    display: inline-block;
+    margin: 0;
+}
+
+.img-small {
+    max-width: 180px;
+}
+
+footer {
+    padding: 1rem 13rem;
+}
