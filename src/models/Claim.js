@@ -1,36 +1,48 @@
-// const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-// const ClaimSchema = new mongoose.Schema({
-//     itemId: {
-//         type: mongoose.Schema.Types.ObjectId,
-//         ref: 'Item', 
-//         required: true,
-//     },
-//     userId: {
-//         type: mongoose.Schema.Types.ObjectId,
-//         ref: 'User',
-//         required: true,
-//     },
-//     proof: {
-//         type: String, 
-//         required: true
-//     },
-//     status: {
-//         type: String, 
-//         enum: ['pending', 'approved', 'rejected', 'withdrawn'],
-//         default: 'pending'
-//     },
+const ClaimSchema = new mongoose.Schema(
+  {
+    itemId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Item",
+      required: true,
+    },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    proof: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    status: {
+      type: String,
+      enum: ["pending", "approved", "rejected", "withdrawn"],
+      default: "pending",
+    },
 
-//     reviewNote: {
-//         type: String,
-//         default: ''
-//     },
-//     reviewedAt: {
-//         type: Date, 
-//         default: null
-//     }
-// }, {
-//     timestamps: true
-// });
+    reviewNote: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+    reviewedAt: {
+      type: Date,
+      default: null,
+    },
+    reviewedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
+    },
+  },
+  {
+    timestamps: true,
+  },
+);
 
-// module.exports = mongoose.model('Claim', ClaimSchema);
+ClaimSchema.index({ itemId: 1, userId: 1 }, { unique: true });
+
+module.exports = mongoose.model("Claim", ClaimSchema);

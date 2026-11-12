@@ -15,3 +15,8 @@ connectDB()
     console.error("Mongoose connection error:", err);
     process.exit(1);
   });
+
+require("./src/models/User");
+require("./src/models/Item");
+require("./src/models/Claim");
+require("./src/models/Message");
