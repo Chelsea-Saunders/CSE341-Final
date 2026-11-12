@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <!-- materialize css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" integrity="sha512-UJfAaOlIRtdR+0P6C3KUoTDAxVTuy3lnSXLyLKlHYJlcSU8Juge/mjeaxDNMlw9LgeIotgz5FP8eUQPhX1q10A==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <!-- font -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0/css/all.min.css" integrity="sha512-c93ifPoTvMdEJH/rKIcBx//AL1znq9+4/RmMGafI/vnTFe/dKwnn1uoeszE2zJBQTS1Ck5CqSBE+34ng2PthJg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+
+    <!-- materialize js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.14.1/ckeditor.js" 
+        integrity="sha256-bEIQpI72w9NJuIVhTLFUF2/8uxl0u5800r8ddViuv+o=" 
+        crossorigin="anonymous"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var elements = document.querySelectorAll('.sidenav');
+            M.Sidenav.init(elements);
+
+            var sElse = document.querySelectorAll('select');
+            M.FormSelect.init(sElse);
+
+            var bodyTextArea = document.querySelectorAll('select');
+            if(bodyTextArea) {
+                CKEDITOR.replace('body', {
+                    plugins: 'wysiwygarea, toolbar, basicstyles, link'
+                });
+            }
+        });
+    </script>
+
+    </head>
+    <body class="<%= locals.bodyClass || '' %>">
+        <header>
+            <nav>
+                <ul>
+                    <!-- Always visible links -->
+                    <li><a href="/dashboard">Dashboard</a></li>
+                    <li><a href="/categories">Categories</a></li>
+                    <li><a href="/public/search-results">Search</a></li>
+
+                    <!-- only visible when logged in -->
+                    <% if (isLoggedIn) { %>
+                        <li><a href="/forms/found.ejs">Post a Found Item</a></li>
+                        <li><a href="/forms/edit.ejs">Edit My Post</a></li>
+                        <li><a href="/forms/lost.ejs">Post a Lost Item</a></li>
+                        <li><a href="/user/my-claims.ejs">My Claims</a></li>
+                        <li><a href="/user/my-posts.ejs">My Posts</a></li>
+                        <li><a href="/user/profile.ejs">My Profile</a></li>
+                        <li><a href="/user/contact.ejs">Contact</a></li>
+                    <% } %>
+
+                        <!-- ADMIN ONLY LINKS -->
+                         <% if (isAdmin) { %>
+                         <li><a href="/admin/admin-dashboard.ejs">Admin Dashboard</a></li>
+                         <li><a href="/admin/admin-delete-post.ejs">Delete any Post</a></li>
+                         <li><a href="/admin/admin-edit-item">Edit any Item</a></li>
+                         <li><a href="/admin/admin-users.ejs">Users</a></li>
+                         <li><a href="/admin/admin-reports">Flagged Items</a></li>
+                    <% } %>
+                    
+                    <!-- Only visible when NOT logged in -->
+                    <% if (!isLoggedIn) { %>
+                        <li><a href="/login">Login</a></li>
+                        <li><a href="/register">Register</a></li>
+                    <% } %>
+                </ul>
+            </nav>
+        </header>
